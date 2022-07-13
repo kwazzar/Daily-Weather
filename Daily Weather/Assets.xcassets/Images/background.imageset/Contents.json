@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "IMAGE 2022-07-13 16:33:05.jpg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "IMAGE 2022-07-13 16:33:09.jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
