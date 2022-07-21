@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class WeatherViewController: UIViewController {
 
@@ -20,6 +21,11 @@ class WeatherViewController: UIViewController {
     
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
+    @IBOutlet var networkWeatherManager: NetworkManager!
+    
+    @IBOutlet var locationManager: LocationManager!
+    
+
     private let alertPlaceholders: [String] = [
     NSLocalizedString("San Francisco", comment: ""),
     NSLocalizedString("Kyiv", comment: ""),
@@ -30,9 +36,35 @@ class WeatherViewController: UIViewController {
     
             override func viewDidLoad() {
         super.viewDidLoad()
+                
+                activityIndicatorView.hidesWhenStopped = true
+                
+                setupLocation()
 
     }
+}
+//MARK: - Private API
+    private extension WeatherViewController {
+     
+        func setupLocation() {
+            locationManager.delegate = self
+            locationManager.requestLocation()
+        }
+    
+        func updateInterface(_ weather: Weather?) {
+            activityIndicatorView.stopAnimating()
+            
+            guard let weather = weather else {
+                return
+            }
 
+            cityLabel.text = weather.cityName
+            temperatureLabel.text = weather.temperature
+            feelsLikeTemperatureLabel.text = weather.temperature
+            weatherIconImageView.image = UIImage(systemName: weather.systemIconNameString)
+        }
+    
+    
     @IBAction func searchPressed(_ sender: UIButton) {
         let placeholder = alertPlaceholders.randomElement()
         let alertController = UIAlertController(title: alertTextFieldPlaceholder, message: "", preferredStyle: .alert)
@@ -45,7 +77,6 @@ class WeatherViewController: UIViewController {
         alertController.addAction(alertSearchAction(with: alertText))
         
         present(alertController, animated: true, completion: nil)
-        
     }
     
     func alertSearchAction(with text: String) -> UIAlertAction {
@@ -57,9 +88,30 @@ class WeatherViewController: UIViewController {
                       return
                   }
             self.activityIndicatorView.startAnimating()
+            self.networkWeatherManager.fetch(endpoint: .CityName(city: cityName), type: WeatherData.self) { [weak self] weather in
+                
+                self?.updateInterface(Weather(weather))
+            }
         }
         return action
     }
     
 }
+
+//MARK: - LocationManagerDelegate
+extension WeatherViewController: LocationManagerDelegate {
+    
+    func didUpdateLocations(coordinate: CLLocationCoordinate2D) {
+        activityIndicatorView.startAnimating()
+        
+        networkWeatherManager.fetch(
+            endpoint: .coordinate(coordinate),
+            type: WeatherData.self)
+        { [weak self] weather in
+                
+            self?.updateInterface(Weather(weather))
+            }
+    }
+}
+    
 

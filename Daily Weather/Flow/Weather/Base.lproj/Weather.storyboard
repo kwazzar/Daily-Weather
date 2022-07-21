@@ -132,11 +132,15 @@
                         <outlet property="activityIndicatorView" destination="hyf-BH-I6g" id="8K0-pK-ZOg"/>
                         <outlet property="cityLabel" destination="q44-GT-w2e" id="WzN-Xj-1Xi"/>
                         <outlet property="feelsLikeTemperatureLabel" destination="DlR-XH-m38" id="kTx-P0-jhk"/>
+                        <outlet property="locationManager" destination="v38-zc-ZJH" id="6sn-ZG-EGq"/>
+                        <outlet property="networkWeatherManager" destination="oHn-xL-Zrm" id="B21-Ka-gVl"/>
                         <outlet property="temperatureLabel" destination="Y3c-qy-O1s" id="Jef-3X-u1N"/>
                         <outlet property="weatherIconImageView" destination="qdx-Qg-jhk" id="YXq-Ql-NDb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <customObject id="oHn-xL-Zrm" customClass="NetworkManager" customModule="Daily_Weather" customModuleProvider="target"/>
+                <customObject id="v38-zc-ZJH" customClass="LocationManager" customModule="Daily_Weather" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="-239" y="17"/>
         </scene>

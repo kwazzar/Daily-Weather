@@ -6,7 +6,6 @@
 //
 
 import CoreLocation.CLLocation
-import Foundation
 
 //MARK: - NetworkManageable
 protocol NetworkManagable: AnyObject {
