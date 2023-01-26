@@ -24,11 +24,11 @@ protocol Location: AnyObject {
 }
 
 //MARK: - LocationManager
-final class LocationManager: NSObject, Location {
+class LocationManager: NSObject, Location {
     
     weak var delegate: LocationManagerDelegate?
     
-    private let manager: CLLocationManager
+     let manager: CLLocationManager
     
     override init() {
         manager = CLLocationManager()

@@ -33,6 +33,7 @@ final class NetworkManager: NSObject, NetworkManagable {
         urlComponents.queryItems = endpoint.queryItems
         urlComponents.queryItems?.append(.init(name: "apikey", value: kOpenweathermapKey))
         
+        performRequest(url: urlComponents.url, type: type, completion: completion)
     }
 
     private func performRequest<T: Codable> (url: URL?, type: T.Type, completion: @escaping (T) -> () ) {

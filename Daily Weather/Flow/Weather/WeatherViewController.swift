@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import CoreLocation
+import CoreLocation.CLLocation
 
 class WeatherViewController: UIViewController {
 
@@ -14,16 +14,13 @@ class WeatherViewController: UIViewController {
     private let alertTextFieldPlaceholder = NSLocalizedString("Enter city name", comment: "Alert text field placeholder")
     private let alertSearchButton = NSLocalizedString("Search", comment: "Alert search button")
     
-    @IBOutlet weak var weatherIconImageView: UIImageView!
-    @IBOutlet weak var temperatureLabel: UILabel!
-    @IBOutlet weak var feelsLikeTemperatureLabel: UILabel!
-    @IBOutlet weak var cityLabel: UILabel!
-    
-    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
-    
-    @IBOutlet var networkWeatherManager: NetworkManager!
-    
-    @IBOutlet var locationManager: LocationManager!
+    @IBOutlet private weak var weatherIconImageView: UIImageView!
+    @IBOutlet private weak var temperatureLabel: UILabel!
+    @IBOutlet private weak var feelsLikeTemperatureLabel: UILabel!
+    @IBOutlet private weak var cityLabel: UILabel!
+    @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet private var networkWeatherManager: NetworkManager!
+    @IBOutlet private var locationManager: LocationManager!
     
 
     private let alertPlaceholders: [String] = [
@@ -41,6 +38,11 @@ class WeatherViewController: UIViewController {
                 
                 setupLocation()
 
+    }
+    @IBAction func cancelUpdateLocation(_ sender: UIButton) {
+ 
+        locationManager.manager.stopUpdatingLocation()
+        activityIndicatorView.stopAnimating()
     }
 }
 //MARK: - Private API
@@ -68,35 +70,62 @@ class WeatherViewController: UIViewController {
     @IBAction func searchPressed(_ sender: UIButton) {
         let placeholder = alertPlaceholders.randomElement()
         let alertController = UIAlertController(title: alertTextFieldPlaceholder, message: "", preferredStyle: .alert)
-        let alertText = alertController.textFields?.first?.text ?? ""
         
+//        let search = UIAlertAction(title: alertSearchButton, style: .default) { [weak self] action in
+//            let alertText = alertController.textFields?.first(where: {$0.text != nil})
+//            guard let cityName = alertText?.text else { return }
+//            if cityName != "" {
+//                self?.activityIndicatorView.startAnimating()
+//                self?.networkWeatherManager.fetch(endpoint: .cityName(city: cityName), type: WeatherData.self) { [weak self] weather in
+//
+//                    self?.updateInterface(Weather(weather))
+//            }
+//        }
+//        return
+//                                          }
+                                          
         alertController.addTextField { textField in
             textField.placeholder = placeholder
         }
         alertController.addAction(.init(title: cancelButtonTitle, style: .cancel, handler: nil))
-        alertController.addAction(alertSearchAction(with: alertText))
+        alertController.addAction(SearchAction(alertController: alertController))
         
         present(alertController, animated: true, completion: nil)
     }
     
-    func alertSearchAction(with text: String) -> UIAlertAction {
-        let action = UIAlertAction(title: alertSearchButton, style: .default) { [weak self] action in
-            
-            guard let self = self,
-                  !text.isEmpty,
-                  let cityName = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-                      return
-                  }
-            self.activityIndicatorView.startAnimating()
-            self.networkWeatherManager.fetch(endpoint: .CityName(city: cityName), type: WeatherData.self) { [weak self] weather in
-                
-                self?.updateInterface(Weather(weather))
+        func SearchAction( alertController : UIAlertController ) -> UIAlertAction {
+            let search = UIAlertAction(title: alertSearchButton, style: .default) { [weak self] action in
+                let alertText = alertController.textFields?.first(where: {$0.text != nil})
+                guard let cityName = alertText?.text else { return }
+                if cityName != "" {
+                    self?.activityIndicatorView.startAnimating()
+                    self?.networkWeatherManager.fetch(endpoint: .cityName(city: cityName), type: WeatherData.self) { [weak self] weather in
+                        
+                        self?.updateInterface(Weather(weather))
+                    }
+                }
             }
+            return search
         }
-        return action
     }
-    
-}
+//    func alertSearchAction(with text: String) -> UIAlertAction {
+//        let action = UIAlertAction(title: alertSearchButton, style: .default) { [weak self] action in
+//
+//            guard let self = self,
+//                  !text.isEmpty,
+//                  let cityName = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+//                      return
+//                  }
+//            self.activityIndicatorView.startAnimating()
+//            self.networkWeatherManager.fetch(endpoint: .cityName(city: cityName), type: WeatherData.self) { [weak self] weather in
+//
+//                self?.updateInterface(Weather(weather))
+//            }
+//        }
+//        return action
+//    }
+//
+//}
 
 //MARK: - LocationManagerDelegate
 extension WeatherViewController: LocationManagerDelegate {
@@ -114,4 +143,4 @@ extension WeatherViewController: LocationManagerDelegate {
     }
 }
     
-
+    

@@ -9,18 +9,18 @@ import CoreLocation.CLLocation
 
 enum Endpoint {
     
-    case CityName(city: String)
+    case cityName(city: String)
     case coordinate(CLLocationCoordinate2D)
     
     var path: String {
         switch self {
-        case .CityName(_), .coordinate(_):
-            return " /data/2.5/weather"
+        case .cityName(_), .coordinate(_):
+            return "/data/2.5/weather"
         }
     }
     var queryItems: [URLQueryItem]? {
         switch self {
-        case .CityName(let city):
+        case .cityName(let city):
             return [
             
                 .init(name: "q", value: city),

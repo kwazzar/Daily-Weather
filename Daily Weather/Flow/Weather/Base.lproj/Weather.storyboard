@@ -23,7 +23,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Gze-it-Agh" userLabel="SearchStack">
                                 <rect key="frame" x="284" y="828" width="109.5" height="31"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sumy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q44-GT-w2e">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sumy" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q44-GT-w2e">
                                         <rect key="frame" x="0.0" y="0.0" width="71.5" height="31"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
                                         <color key="textColor" name="infoColor"/>
@@ -106,6 +106,9 @@
                                 <color key="tintColor" name="infoColor"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" backgroundImage="location.slash.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="cancelUpdateLocation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pyC-Yl-C2N"/>
+                                </connections>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="hyf-BH-I6g">
                                 <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
