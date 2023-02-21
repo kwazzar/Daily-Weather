@@ -8,36 +8,32 @@
 import CoreLocation
 import UIKit.UIApplication
 
-//MARK: - LocationManagerDelegete
+ // MARK: - LocationManagerDelegete
 
 protocol LocationManagerDelegate: AnyObject {
-    
     func didUpdateLocations(coordinate: CLLocationCoordinate2D)
 }
 
-//MARK: - Location
+// MARK: - Location
 
 protocol Location: AnyObject {
     var delegate: LocationManagerDelegate? { get set }
-    
     func requestLocation()
 }
 
-//MARK: - LocationManager
+// MARK: - LocationManager
+
 class LocationManager: NSObject, Location {
-    
     weak var delegate: LocationManagerDelegate?
-    
      let manager: CLLocationManager
-    
     override init() {
         manager = CLLocationManager()
         manager.desiredAccuracy = kCLLocationAccuracyKilometer
         super.init()
         manager.delegate = self
-        
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive),
+                                               name: UIApplication.didBecomeActiveNotification,
+                                               object: nil)
         }
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -57,16 +53,13 @@ class LocationManager: NSObject, Location {
     }
 }
 
-//MARK: - CLLocationManagerDelegate
+// MARK: - CLLocationManagerDelegate
 extension LocationManager: CLLocationManagerDelegate {
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else {
             return
         }
-    
         let coordinate = location.coordinate
-        
         delegate?.didUpdateLocations(coordinate: coordinate)
         manager.stopUpdatingLocation()
     }
@@ -75,20 +68,3 @@ extension LocationManager: CLLocationManagerDelegate {
         print(error.localizedDescription)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

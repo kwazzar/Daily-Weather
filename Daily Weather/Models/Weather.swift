@@ -8,13 +8,10 @@
 import Foundation
 
 struct Weather {
-    
     let cityName: String
     let temperature: String
     let feelsLikeTemperature: String
-    
     private let weatherType: Int
-    
     var systemIconNameString: String {
         switch weatherType {
         case 200...232: return "cloud.boly.rain.fill"
@@ -28,11 +25,10 @@ struct Weather {
         }
     }
 
-init?(_ WeatherData: WeatherData) {
-    cityName = WeatherData.name
-    temperature = String(format: "%.0f", WeatherData.info.temp)
-    feelsLikeTemperature = String(format: "%.0f", WeatherData.info.feelsLike)
-    
-    weatherType = WeatherData.weather.first?.weatherType ?? 0
-}
+    init?(_ weatherData: WeatherData) {
+        cityName = weatherData.name
+        temperature = String(format: "%.0f", weatherData.info.temp)
+        feelsLikeTemperature = String(format: "%.0f", weatherData.info.feelsLike)
+        weatherType = weatherData.weather.first?.weatherType ?? 0
+    }
 }

@@ -8,10 +8,8 @@
 import CoreLocation.CLLocation
 
 enum Endpoint {
-    
     case cityName(city: String)
     case coordinate(CLLocationCoordinate2D)
-    
     var path: String {
         switch self {
         case .cityName(_), .coordinate(_):
@@ -22,13 +20,11 @@ enum Endpoint {
         switch self {
         case .cityName(let city):
             return [
-            
                 .init(name: "q", value: city),
                 .init(name: "units", value: "metric")
             ]
         case .coordinate(let coordinate):
             return [
-            
                 .init(name: "lat", value:
                         coordinate.latitude.description),
                 .init(name: "lon", value:

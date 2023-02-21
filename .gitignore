@@ -48,7 +48,7 @@ playground.xcworkspace
 # .swiftpm
 
 .build/
-Daily Weather/Keys/
+Daily Weather/Keys/Keys.swift
 
 # CocoaPods
 #
